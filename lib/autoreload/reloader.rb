@@ -7,6 +7,15 @@ module AutoReload
   # for AutoReload library.
   #
   class Reloader
+    @logger = nil
+
+    class << self
+      attr_reader :logger
+    end
+
+    def self.set_logger(logger)
+      @logger = logger
+    end
 
     # Shortcut for Reloader.new(*args).start.
     def self.start(*args)
@@ -131,6 +140,9 @@ module AutoReload
       end
     end
 
+    def warn(msg)
+      logger ? logger.warn msg : Kernel.warn msg
+    end
   end
 
 end
