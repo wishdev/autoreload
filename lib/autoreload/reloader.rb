@@ -129,8 +129,8 @@ module AutoReload
 
     # Get library file status.
     def get_status(lib)
-      file = Lookup.find(lib).first
-      if file #FileTest.exist?(file)
+      file = Lookup.find(lib).first || FileTest.exist?(lib) ? lib : nil
+      if file
         [file, File.mtime(file).to_i]
       else
         warn "reload fail: library '#{lib}' not found" if verbose?
@@ -141,7 +141,7 @@ module AutoReload
     end
 
     def warn(msg)
-      logger ? logger.warn msg : Kernel.warn msg
+      @logger ? @logger.warn(msg) : Kernel.warn(msg)
     end
   end
 
